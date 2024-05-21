@@ -14,7 +14,7 @@ import axios from 'axios';
 
 // Create an instance of axios with default headers set
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api', // Your API base URL
+  baseURL: 'https://lms.upseba.com.bd/api', // Your API base URL
 });
 
 export default {

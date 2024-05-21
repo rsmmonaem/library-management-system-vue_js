@@ -3,6 +3,7 @@ import Home from "../Components/Home.vue";
 import SingleProduct from "../Components/SingleProduct.vue";
 import ProductsByCat from "../Components/ProductsByCat.vue";
 import Admin from "../Components/admin/Admin.vue";
+import Member from "../Components/admin/Member.vue";
 import Login from "../Components/LoginPage.vue";
 import Add_Author from "../Components/admin/pages/Add_Author.vue";
 import Edit_Author from "../Components/admin/pages/Edit_Author.vue";
@@ -10,6 +11,7 @@ import List_Author from "../Components/admin/pages/List_Author.vue";
 import Add_Book from "../Components/admin/pages/Add_Book.vue";
 import Edit_Book from "../Components/admin/pages/Edit_Book.vue";
 import List_Book from "../Components/admin/pages/List_Book.vue";
+import List_Borrowed_book from "../Components/admin/pages/List_Borrowed_book.vue";
 import NotFound from "../Components/NotFound.vue";
 
 const routes = [
@@ -57,7 +59,7 @@ const routes = [
     meta: { requiresAdmin: true },
   },
   {
-    path: "/Admin/List_Author'",
+    path: "/Admin/List_Author",
     name: "List_Author",
     component: List_Author,
     meta: { requiresAdmin: true },
@@ -72,7 +74,7 @@ const routes = [
     path: "/Admin/List_Book",
     name: "List_Book",
     component: List_Book,
-    meta: { requiresAdmin: true },
+    meta: { requiresAdmin: true},
   },
   {
     path: "/Admin/Edit_Book/:id",
@@ -80,6 +82,19 @@ const routes = [
     component: Edit_Book,
     meta: { requiresAdmin: true },
   },
+  {
+    path: "/Member",
+    name: "Member",
+    component: Member,
+    meta: { requiresMember: true },
+  },
+  {
+    path: "/Member/List-Borrowed-book",
+    name: "List_Borrowed_book",
+    component: List_Borrowed_book,
+    meta: { requiresMember: true },
+  },
+  
   // Wildcard route for 404 Not Found
   {
     path: "/:catchAll(.*)", // Matches any path not matched by earlier routes
@@ -110,7 +125,7 @@ router.beforeEach((to, from, next) => {
     if (userType === 'admin') {
       next({ name: 'Admin' });
     } else if (userType === 'member') {
-      next({ name: 'List_Author' });
+      next({ name: 'Member' });
     } else {
       next({ name: 'login' });
     }

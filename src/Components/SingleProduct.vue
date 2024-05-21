@@ -59,7 +59,7 @@ export default {
   methods: {
     async fetchProducts() {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/book/${this.id}`)
+        const response = await axios.get(`https://lms.upseba.com.bd/api/book/${this.id}`)
         this.responseData = response.data
         console.log(response.data)
         this.dataLoaded = true // Update dataLoaded to true after images are loaded

@@ -4,7 +4,7 @@
         <div id="layoutSidenav">
             <LeftSidebar />
             <div id="layoutSidenav_content">
-                
+                <h1>hi</h1>
             </div>
         </div>
         <Footer />

@@ -43,7 +43,7 @@ export default {
   methods: {
     async fatchProducts() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/authors')
+        const response = await axios.get('https://lms.upseba.com.bd/api/authors')
         this.responseData = response.data
       } catch (error) {
         console.error('Error fetching data:', error)

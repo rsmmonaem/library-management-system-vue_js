@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     fetchAuthorData() {
-      axios.patch(`http://127.0.0.1:8000/api/update_author/${this.slug}`)
+      axios.patch(`https://lms.upseba.com.bd/api/update_author/${this.slug}`)
         .then(response => {
           this.authorName = response.data.author.AuthorName;
           this.authorBio = response.data.author.AuthorBio;
@@ -105,7 +105,7 @@ export default {
       AuthorBio: this.authorBio,
     };
 
-    axios.patch(`http://127.0.0.1:8000/api/update_author/${this.slug}`, authorData)
+    axios.patch(`https://lms.upseba.com.bd/api/update_author/${this.slug}`, authorData)
       .then(response => {
         if (response.data.success) {
           this.showMessage('success', 'Author created successfully');

@@ -62,7 +62,7 @@ export default {
   methods: {
     async fatchProducts() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/books')
+        const response = await axios.get('https://lms.upseba.com.bd/api/books')
         this.responseData = response.data
         this.dataLoaded = true
       } catch (error) {

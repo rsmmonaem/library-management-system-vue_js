@@ -160,7 +160,7 @@ export default {
   },
   methods: {
     fetchBookData() {
-  axios.patch(`http://127.0.0.1:8000/api/update_book/${this.bookId}`)
+  axios.patch(`https://lms.upseba.com.bd/api/update_book/${this.bookId}`)
     .then(response => {
       const bookData = response.data.book;
       this.title = bookData.Title;
@@ -195,7 +195,7 @@ export default {
         totalCopies: this.totalCopies,
       };
 
-      axios.patch(`http://127.0.0.1:8000/api/update_book/${this.bookId}`, updatedBookData)
+      axios.patch(`https://lms.upseba.com.bd/api/update_book/${this.bookId}`, updatedBookData)
         .then(response => {
           if (response.data.success) {
             this.showMessage('success', 'Book updated successfully');

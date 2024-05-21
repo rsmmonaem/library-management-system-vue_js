@@ -90,7 +90,7 @@ export default {
   methods: {
     async fetchProducts() {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/books/author/${this.slug}`)
+        const response = await axios.get(`https://lms.upseba.com.bd/api/books/author/${this.slug}`)
         this.responseData = response.data
         this.dataLoaded = true
       } catch (error) {
