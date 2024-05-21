@@ -1,4 +1,4 @@
-Live URL: https://vue-ecommerce-rsm.netlify.app/
+Live URL: https://lms-vue.netlify.app/
 
 
 # vue-project
