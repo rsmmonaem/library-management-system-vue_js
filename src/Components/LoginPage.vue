@@ -24,6 +24,11 @@
               <div class="form-group">
                 <input type="submit" value="Submit" class="btn btn-primary">
               </div>
+              <div class="form-group" style="text-align: center;background: green; color: white;">
+                Email: 'user@example.com'
+                <br/>
+                Password: 'password'
+              </div>
             </form>
           </div>
         </div>
