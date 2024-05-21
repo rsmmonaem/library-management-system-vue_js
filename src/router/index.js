@@ -13,6 +13,9 @@ import Add_Book from "../Components/admin/pages/Add_Book.vue";
 import Edit_Book from "../Components/admin/pages/Edit_Book.vue";
 import List_Book from "../Components/admin/pages/List_Book.vue";
 import List_Borrowed_book from "../Components/admin/pages/List_Borrowed_book.vue";
+import List_Borrowed_book_member from "../Components/admin/pages/List_Borrowed_book_member.vue";
+
+
 import NotFound from "../Components/NotFound.vue";
 
 const routes = [
@@ -20,7 +23,12 @@ const routes = [
     path: "/", 
     name: "home", 
     component: Home 
-  },
+  },{
+  path: "/Admin/List-Borrowed-book",
+  name: "List_Borrowed_book_admin",
+  component: List_Borrowed_book,
+  meta: { requiresAdmin: true },
+},
   { 
     path: "/login", 
     name: "login", 
@@ -97,7 +105,7 @@ const routes = [
   {
     path: "/Member/List-Borrowed-book",
     name: "List_Borrowed_book",
-    component: List_Borrowed_book,
+    component: List_Borrowed_book_member,
     meta: { requiresMember: true },
   },
   

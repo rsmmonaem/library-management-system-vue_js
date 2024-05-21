@@ -10,6 +10,9 @@ const apiService = axios.create({
 export const addAuthor = (authorData) => {
   return apiService.post('api/add_author', authorData);
 };
+export const borrowBook = (borrowBook) => {
+  return apiService.post('api/borrow-book', borrowBook);
+};
 export const ListAuthor = (ListAuthor) => {
   return apiService.get('api/authors', ListAuthor);
 };

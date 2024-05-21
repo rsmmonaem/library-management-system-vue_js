@@ -83,16 +83,22 @@ export default {
       }
     },
     fetchBorrowedBooks() {
-      const token = localStorage.getItem('token');
-      this.setAuthHeader(token);
-      apiClient.get('/borrowed-books-list')
-        .then(response => {
-          this.borrowedBooks = response.data; 
-        })
-        .catch(error => {
-          console.error('Error fetching borrowed books:', error); 
-        });
-    },
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId');
+  if (!token || !userId) {
+    console.error('Token or userId not found in localStorage');
+    return;
+  }
+  this.setAuthHeader(token);
+  apiClient.get(`/borrowed-books/${userId}`)
+    .then(response => {
+      this.borrowedBooks = response.data; 
+    })
+    .catch(error => {
+      console.error('Error fetching borrowed books:', error); 
+    });
+},
+
   },
   components: {
     Header,
