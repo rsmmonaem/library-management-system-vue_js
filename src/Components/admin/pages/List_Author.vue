@@ -37,7 +37,6 @@
                         </router-link>
                         <button @click="deleteAuthor(author.AuthorID)" class="btn btn-danger mr-2">Delete</button>
                     </td>
-
                   </tr>
                 </tbody>
               </table>
@@ -54,8 +53,12 @@
 import Header from '../Header.vue';
 import Footer from '../Footer.vue';
 import LeftSidebar from '../LeftSidebar.vue';
-import { ListAuthor } from "/apiService.js";
 import axios from 'axios';
+
+// Create an instance of axios with default headers set
+const apiClient = axios.create({
+  baseURL: 'http://127.0.0.1:8000/api', // Your API base URL
+});
 
 export default {
   data() {
@@ -78,8 +81,18 @@ export default {
     }
   },
   methods: {
+    setAuthHeader(token) {
+      if (token) {
+        apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        console.log('Token set in headers:', apiClient.defaults.headers.common['Authorization']); // For debugging
+      } else {
+        delete apiClient.defaults.headers.common['Authorization'];
+      }
+    },
     fetchAuthors() {
-      ListAuthor() 
+      const token = localStorage.getItem('token');
+      this.setAuthHeader(token);
+      apiClient.get('/authors')
         .then(response => {
           this.authors = response.data; 
         })
@@ -88,21 +101,22 @@ export default {
         });
     },
     deleteAuthor(authorId) {
-  axios.delete(`http://127.0.0.1:8000/api/delete_author/${authorId}`)
-    .then(response => {
-      if (response.data.success) {
-        this.showMessage('success', 'Author deleted successfully');
-        this.fetchAuthors();
-      } else {
-        this.showMessage('error', response.data.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error deleting author:', error);
-      this.showMessage('error', 'An error occurred while deleting the author');
-    });
-}
-,
+      const token = localStorage.getItem('token');
+      this.setAuthHeader(token);
+      apiClient.delete(`/delete_author/${authorId}`)
+        .then(response => {
+          if (response.data.success) {
+            this.showMessage('success', 'Author deleted successfully');
+            this.fetchAuthors();
+          } else {
+            this.showMessage('error', response.data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error deleting author:', error);
+          this.showMessage('error', 'An error occurred while deleting the author');
+        });
+    },
     showMessage(type, message) {
       const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
       const alert = `
@@ -117,6 +131,7 @@ export default {
       }, 2000);
     },
     hideMessage() {
+      this.$refs.messageContainer.innerHTML = ''; // Clear message container
     },
   },
   watch: {

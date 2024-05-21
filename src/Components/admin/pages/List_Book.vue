@@ -19,7 +19,7 @@
             <div class="card-body">
               <table id="authorTable" class="table" style="text-align: center;">
                 <thead>
-                  <tr style="content">
+                  <tr>
                     <th>SL</th>
                     <th>Title</th>
                     <th>Name</th>
@@ -34,12 +34,11 @@
                     <td>{{ author.author.AuthorName }}</td>
                     <td>{{ author.author.AuthorBio }}</td>
                     <td>
-                        <router-link :to="{ name: 'Edit_Book', params: { id: author.BookID } }">
-                          <span class="btn btn-success mr-2">Edit</span>
-                        </router-link>
-                        <button @click="deleteBook(author.BookID)" class="btn btn-danger mr-2">Delete</button>
+                      <router-link :to="{ name: 'Edit_Book', params: { id: author.BookID } }">
+                        <span class="btn btn-success mr-2">Edit</span>
+                      </router-link>
+                      <button @click="deleteBook(author.BookID)" class="btn btn-danger mr-2">Delete</button>
                     </td>
-
                   </tr>
                 </tbody>
               </table>
@@ -56,14 +55,18 @@
 import Header from '../Header.vue';
 import Footer from '../Footer.vue';
 import LeftSidebar from '../LeftSidebar.vue';
-import { ListBook } from "/apiService.js";
 import axios from 'axios';
+
+// Create an instance of axios with default headers set
+const apiClient = axios.create({
+  baseURL: 'http://127.0.0.1:8000/api', // Your API base URL
+});
 
 export default {
   data() {
     return {
       authors: [],
-      table: null 
+      table: null,
     };
   },
   created() {
@@ -75,23 +78,29 @@ export default {
     }
   },
   methods: {
+    setAuthHeader(token) {
+      if (token) {
+        apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        console.log('Token set in headers:', apiClient.defaults.headers.common['Authorization']); // For debugging
+      } else {
+        delete apiClient.defaults.headers.common['Authorization'];
+      }
+    },
     fetchAuthors() {
       const token = localStorage.getItem('token');
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-      console.log(token);
-      ListBook() 
+      this.setAuthHeader(token);
+      apiClient.get('/books')
         .then(response => {
-          this.authors = response.data; 
+          this.authors = response.data;
         })
         .catch(error => {
-          console.error('Error fetching authors:', error); 
+          console.error('Error fetching authors:', error);
         });
     },
     deleteBook(BookID) {
-      // const token = localStorage.getItem('token');
-      // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-      axios.delete(`http://127.0.0.1:8000/api/delete_book/${BookID}`)
+      const token = localStorage.getItem('token');
+      this.setAuthHeader(token);
+      apiClient.delete(`/delete_book/${BookID}`)
         .then(response => {
           if (response.data.success) {
             this.showMessage('success', 'Book deleted successfully');
@@ -122,9 +131,9 @@ export default {
     Footer,
     LeftSidebar
   }
-}
+};
 </script>
 
-<style></style>
-
-<style></style>
+<style scoped>
+/* Add any relevant styles here */
+</style>
