@@ -1,4 +1,4 @@
-Live URL: https://lms-vue.netlify.app/
+Live URL: https://library-management-system-vue-js.vercel.app
 
 
 # vue-project
