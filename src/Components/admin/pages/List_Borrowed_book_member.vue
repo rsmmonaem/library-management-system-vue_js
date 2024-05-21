@@ -24,10 +24,10 @@
                     <th>Book Title</th>
                     <th>Borrow Date</th>
                     <th>Return Date</th>
-                    <th>Status</th>
                     <th>Borrower Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
+                    <!-- <th>Email</th>
+                    <th>Phone Number</th> -->
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -36,10 +36,16 @@
                     <td>{{ borrowedBook.book.Title }}</td>
                     <td>{{ borrowedBook.BorrowDate }}</td>
                     <td>{{ borrowedBook.ReturnDate }}</td>
-                    <td>{{ borrowedBook.Status }}</td>
                     <td>{{ borrowedBook.member.FirstName }} {{ borrowedBook.member.LastName }}</td>
-                    <td>{{ borrowedBook.member.Email }}</td>
-                    <td>{{ borrowedBook.member.PhoneNumber }}</td>
+                    <!-- <td>{{ borrowedBook.member.Email }}</td>
+                    <td>{{ borrowedBook.member.PhoneNumber }}</td> -->
+                    <td>
+                      <button v-if="borrowedBook.Status === 'Borrowed'" @click="returnBorrowedBook(borrowedBook.BorrowID, borrowedBook.member.MemberID)" class="btn btn-danger mr-2">Return</button>
+
+                      <button v-if="borrowedBook.Status === 'Returned'" class="btn btn-primary mr-2 mb-2">Returned</button>
+
+                      <button @click="deleteBorrowedBook(borrowedBook.BorrowID)" class="btn btn-danger mr-2 mt-2">Delete</button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -83,22 +89,80 @@ export default {
       }
     },
     fetchBorrowedBooks() {
-  const token = localStorage.getItem('token');
-  const userId = localStorage.getItem('userId');
-  if (!token || !userId) {
-    console.error('Token or userId not found in localStorage');
-    return;
-  }
-  this.setAuthHeader(token);
-  apiClient.get(`/borrowed-books/${userId}`)
-    .then(response => {
-      this.borrowedBooks = response.data; 
-    })
-    .catch(error => {
-      console.error('Error fetching borrowed books:', error); 
-    });
-},
+      const token = localStorage.getItem('token');
+      this.setAuthHeader(token);
+      apiClient.get('/borrowed-books-list')
+        .then(response => {
+          this.borrowedBooks = response.data; 
+        })
+        .catch(error => {
+          console.error('Error fetching borrowed books:', error); 
+        });
+    },
+    deleteBorrowedBook(borrowID) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Token not found in localStorage');
+        return;
+      }
+      this.setAuthHeader(token);
+      
+      apiClient.delete(`/delete-borrow-book/${borrowID}`)
+        .then(response => {
+          // Handle success response
+          console.log('Borrowed book deleted successfully:', response.data);
+          // Display success message
+          this.showMessage('success', 'Borrowed book deleted successfully');
+          // Fetch updated list of borrowed books
+          this.fetchBorrowedBooks();
+        })
+        .catch(error => {
+          // Handle error response
+          console.error('Error deleting borrowed book:', error);
+          // Display error message
+          this.showMessage('error', 'An error occurred while deleting the borrowed book');
+        });
+    },
+    returnBorrowedBook(borrowID, memberID) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Token not found in localStorage');
+        return;
+      }
+      this.setAuthHeader(token);
+      
+      apiClient.put(`/borrowed-books/${borrowID}/return/${memberID}`)
+        .then(response => {
+          // Handle success response
+          console.log('Book returned successfully:', response.data);
+          // Display success message
+          this.showMessage('success', 'Book returned successfully');
+          // Fetch updated list of borrowed books
+          this.fetchBorrowedBooks();
+        })
+        .catch(error => {
+          // Handle error response
+          console.error('Error returning book:', error);
+          // Display error message
+          this.showMessage('error', 'An error occurred while returning the book');
+        });
+    },
+    showMessage(type, message) {
+      const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+      const alert = `
+        <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+          ${message}
+        </div>
+      `;
+      this.$refs.messageContainer.innerHTML = alert;
 
+      setTimeout(() => {
+        this.hideMessage();
+      }, 2000);
+    },
+    hideMessage() {
+      this.$refs.messageContainer.innerHTML = ''; // Clear message container
+    },
   },
   components: {
     Header,
@@ -107,5 +171,6 @@ export default {
   }
 }
 </script>
+
 
 <style></style>

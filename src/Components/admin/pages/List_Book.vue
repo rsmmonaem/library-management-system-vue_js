@@ -35,9 +35,9 @@
                     <td>{{ author.author.AuthorBio }}</td>
                     <td>
                       <router-link :to="{ name: 'Edit_Book', params: { id: author.BookID } }">
-                        <span class="btn btn-success mr-2">Edit</span>
+                        <span class="btn btn-success mr-2 mb-2">Edit</span>
                       </router-link>
-                      <button @click="deleteBook(author.BookID)" class="btn btn-danger mr-2">Delete</button>
+                      <button @click="deleteBook(author.BookID)" class="btn btn-danger mr-2 mt-2">Delete</button>
                     </td>
                   </tr>
                 </tbody>

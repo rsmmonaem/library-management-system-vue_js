@@ -11,7 +11,11 @@
                             Visit Site
                         </router-link>
                     </div>
-                    <a class="nav-link" href="/admin">
+                    <a v-if="userType === 'admin'" class="nav-link" href="/admin">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Dashboard
+                    </a>
+                    <a v-if="userType === 'member'" class="nav-link" href="/member">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
@@ -21,7 +25,8 @@
                         <router-link class="nav-link collapsed" :to="{ name: 'List_Author' }">List Author</router-link>
                     </template>
                     <router-link v-if="userType === 'admin'" class="nav-link collapsed" :to="{ name: 'Add_Book' }">Add Book</router-link>
-                    <router-link v-if="userType === 'admin' || userType === 'member'" class="nav-link collapsed" :to="{ name: 'List_Book' }">List Book</router-link>
+                    <router-link v-if="userType === 'admin'" class="nav-link collapsed" :to="{ name: 'List_Book' }">List Book</router-link>
+                    <router-link v-if="userType === 'admin'" class="nav-link collapsed" :to="{ name: 'List_Borrowed_book_admin' }">List Borrowed-book</router-link>
                     <router-link v-if="userType === 'member'" class="nav-link collapsed" :to="{ name: 'List_Borrowed_book' }">List Borrowed-book</router-link>
                 </div>
             </div>

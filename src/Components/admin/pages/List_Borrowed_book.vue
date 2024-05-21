@@ -93,6 +93,24 @@ export default {
           console.error('Error fetching borrowed books:', error); 
         });
     },
+    showMessage(type, message) {
+  const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+  const alert = `
+    <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+      ${message}
+    </div>
+  `;
+  this.$refs.messageContainer.innerHTML = alert;
+
+  setTimeout(() => {
+    this.hideMessage();
+  }, 2000);
+},
+hideMessage() {
+  this.$refs.messageContainer.innerHTML = ''; // Clear message container
+},
+
+
   },
   components: {
     Header,

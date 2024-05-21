@@ -57,7 +57,7 @@ const routes = [
   {
     path: "/Admin",
     name: "Admin",
-    component: Admin,
+    component: List_Borrowed_book,
     meta: { requiresAdmin: true },
   },
   {
@@ -99,7 +99,7 @@ const routes = [
   {
     path: "/Member",
     name: "Member",
-    component: Member,
+    component: List_Borrowed_book_member,
     meta: { requiresMember: true },
   },
   {
