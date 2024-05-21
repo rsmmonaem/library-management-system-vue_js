@@ -5,6 +5,7 @@ import ProductsByCat from "../Components/ProductsByCat.vue";
 import Admin from "../Components/admin/Admin.vue";
 import Member from "../Components/admin/Member.vue";
 import Login from "../Components/LoginPage.vue";
+import Logout from "../Components/Logout.vue";
 import Add_Author from "../Components/admin/pages/Add_Author.vue";
 import Edit_Author from "../Components/admin/pages/Edit_Author.vue";
 import List_Author from "../Components/admin/pages/List_Author.vue";
@@ -24,6 +25,11 @@ const routes = [
     path: "/login", 
     name: "login", 
     component: Login 
+  },
+  {
+    path: '/Logout',
+    name: 'Logout',
+    component: Logout
   },
   { 
     path: "/product/:id", 
