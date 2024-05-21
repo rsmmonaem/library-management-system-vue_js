@@ -19,7 +19,16 @@
             {{ category.AuthorName }}
           </router-link>
         </li>
-
+        <li v-if="userType === 'admin' || userType === 'member'" class="nav-item">
+          <router-link  class="nav-link collapsed" :to="{ name: 'Logout' }">Logout</router-link>
+        </li>
+        <li>
+          <router-link v-if="userType === 'admin'" class="nav-link collapsed" :to="{ name: 'Admin' }">Dashboard</router-link>
+          <router-link v-else-if="userType === 'member'" class="nav-link collapsed" :to="{ name: 'Member' }">Dashboard</router-link>
+        </li>
+        <li v-if="!userType" class="nav-item">
+          <router-link class="nav-link collapsed" :to="{ name: 'login' }">Login</router-link>
+        </li>
       </ul>
     </div>
   </nav>
@@ -34,11 +43,19 @@ export default {
       responseData: null,
       Allproducts: () => {
         console.log('hi')
-      }
+      },
+      userType: ''
     }
   },
   mounted() {
-    this.fatchProducts()
+    this.fatchProducts();
+    const userType = localStorage.getItem('userType');
+        if (userType) {
+            this.userType = userType;
+        } else {
+            console.log('User Type Not Found');
+            // Optionally handle this case, like redirecting to a login page
+        }
   },
   methods: {
     async fatchProducts() {
